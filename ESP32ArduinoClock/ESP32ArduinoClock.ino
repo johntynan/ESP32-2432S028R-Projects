@@ -1,3 +1,18 @@
+/*******************************************************
+ *  ESP32-2432S028R CLOCK + TOUCH + PHYSICAL BUTTONS
+ *
+ *  ----------- PHYSICAL WIRING (BUTTONS) -----------
+ *
+ *  BUTTONS USE INTERNAL PULL-UPS:
+ *      One side of button → GPIO pin
+ *      Other side → GND
+ *
+ *  FINAL BUTTON ASSIGNMENTS:
+ *      Hour Button  → GPIO22
+ *      Minute Button → GPIO27
+ *
+ *******************************************************/
+
 #include <TFT_eSPI.h>
 #include <XPT2046_Touchscreen.h>
 #include <SPI.h>
@@ -14,8 +29,8 @@
 // -----------------------------
 // PHYSICAL BUTTON PINS
 // -----------------------------
-#define BTN_HOUR 27
-#define BTN_MIN  14
+#define BTN_HOUR 22
+#define BTN_MIN  27
 
 // -----------------------------
 // DISPLAY + TOUCH OBJECTS
@@ -32,7 +47,6 @@ struct Button {
   const char* label;
 };
 
-// Three buttons across the bottom
 Button btnHourTouch  = { 10,  185, 90, 40, "H +" };
 Button btnQuoteTouch = { 115, 185, 90, 40, "Q +" };
 Button btnMinTouch   = { 220, 185, 90, 40, "M +" };
@@ -46,7 +60,7 @@ int secVal  = 0;
 int lastHourDisplayed = -1;
 
 // -----------------------------
-// QUOTES (UPDATED)
+// QUOTES
 // -----------------------------
 const char* quotes[] = {
   "You're not late yet!",
@@ -58,17 +72,14 @@ const char* quotes[] = {
 int quoteIndex = 0;
 int totalQuotes = sizeof(quotes) / sizeof(quotes[0]);
 
-// -----------------------------
-// QUOTE SEGMENTATION
-// -----------------------------
 String segments[10];
 int segmentCount = 0;
 int currentSegment = 0;
 unsigned long lastSegmentSwitch = 0;
-int segmentDuration = 5000; // 5 seconds
+int segmentDuration = 5000;
 
 // -----------------------------
-// TOUCH CALIBRATION VALUES
+// TOUCH CALIBRATION
 // -----------------------------
 int mapX(int rawX) { return map(rawX, 259, 3633, 0, 319); }
 int mapY(int rawY) { return map(rawY, 625, 3550, 0, 239); }
@@ -94,12 +105,12 @@ bool inButton(Button &b, int x, int y) {
 }
 
 // -----------------------------
-// SPLIT QUOTE INTO SEGMENTS
+// QUOTE SEGMENTATION
 // -----------------------------
 void segmentQuote() {
   String q = quotes[quoteIndex];
 
-  int maxChars = 40; // characters per segment
+  int maxChars = 40;
   segmentCount = 0;
   currentSegment = 0;
 
@@ -111,7 +122,7 @@ void segmentQuote() {
 }
 
 // -----------------------------
-// DRAW CURRENT SEGMENT (TWO LINES)
+// DRAW QUOTE
 // -----------------------------
 void drawQuote() {
   tft.fillRect(0, 110, 320, 60, TFT_BLACK);
@@ -122,7 +133,6 @@ void drawQuote() {
 
   String seg = segments[currentSegment];
 
-  // Split segment into two lines
   int mid = seg.length() / 2;
   int split = mid;
 
@@ -214,7 +224,7 @@ void handlePhysicalButtons() {
 }
 
 // -----------------------------
-// TOUCH HANDLER (PRESS-RELEASE)
+// TOUCH HANDLER
 // -----------------------------
 void handleTouch() {
   static bool wasTouched = false;
