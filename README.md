@@ -2,7 +2,19 @@
 
 The ESP32‑2432S028R is a pre‑wired ESP32 + TFT + touch module with a non‑standard SPI layout, so you must use its fixed pin assignments, custom SPI initialization, and calibrated touch mapping to get everything working smoothly.
 
+# Big Thanks
 
+Big thanks to R ui Santos & Sara Santos at Ra*ndom Nerd Tutorials for all their work, especially their instructions to install the "TFT_eSPI" library by Bodmer to interface with the TFT Display - https://github.com/Bodmer/TFT_eSPI as well as providing a functional User_Setup.h file.
+
+CHECK FOR THEIR LATEST VERSION IN THE LINK BELOW IN ORDER TO USE THE EXAMPLES FROM RANDOM NERD TUTORIALS
+
+ https://RandomNerdTutorials.com/cyd/
+ https://RandomNerdTutorials.com/esp32-tft/
+ FULL INSTRUCTIONS AVAILABLE ON HOW CONFIGURE THE LIBRARY: 
+ https://RandomNerdTutorials.com/cyd/ or https://RandomNerdTutorials.com/esp32-tft/
+
+As well as
+https://randomnerdtutorials.com/lvgl-esp32-tft-touchscreen-display-ili9341-arduino/
 
 ---
 
